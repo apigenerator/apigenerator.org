@@ -1,0 +1,21 @@
+/sources/
+/docs/
+/config/repositories.yml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+/.buildpath
+/.project
+/.settings/
+/.build/
+/.idea/
+/nbproject/
+
+# dependencies
+/apigen
+/build
+/vendor
+/composer.lock
