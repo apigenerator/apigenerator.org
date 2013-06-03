@@ -1,0 +1,47 @@
+body {
+	padding-top: 60px;
+}
+
+.fork {
+	@media (min-width: 640px) {
+		position: absolute;
+		top: 0;
+		left: 0;
+		border: 0;
+	}
+	@media (max-width: 639px) {
+		display: none;
+	}
+}
+
+.container-narrow {
+	width: 640px;
+	margin: 0 auto;
+
+	@media (max-width: 640px) {
+		width: auto;
+	}
+}
+
+header {
+	padding: 12px 0 0;
+
+	@media (min-width: 641px) {
+		position: fixed;
+		width: 640px;
+		height: 60px;
+		top: 0;
+	}
+
+	.navbar {
+		padding-bottom: 0;
+	}
+}
+
+section {
+	padding: 60px 0;
+}
+
+#about {
+	text-align: center;
+}

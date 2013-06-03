@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>apigenerator.org - free apigen your sources!</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+	<link href="style.min.css" rel="stylesheet" media="screen">
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="0">
+<div class="container-narrow">
+	<a href="https://github.com/apigenerator/apigenerator.org" class="fork"><img src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
+
+	<header id="header">
+		<div class="navbar">
+  			<div class="navbar-inner">
+				<a href="http://apigenerator.org" class="brand">apigenerator.org</a>
+				<ul class="nav pull-right">
+					<li><a href="#about"><i class="icon-home"></i> About</a></li>
+					<li><a href="#use"><i class="icon-leaf"></i> Use</a></li>
+					<li class="hide"><a href="#imprint"><i class="icon-user"></i> Imprint</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+	<section id="about">
+		<h1><img src="logo.png"> free apigen your sources!</h1>
+		<p class="lead">apigenerator.org creates your api documentation, using <a href="http://apigen.org" target="_blank">apigen</a>
+			just in time and push it back into your repository as github page!</p>
+		<a href="#use" class="btn btn-large btn-success">It is free, try it out!</a>
+
+		<!--
+		<div id="github-badge"></div>
+		<script type="text/javascript" charset="utf-8">
+			GITHUB_USERNAME = 'apigenerator';
+			GITHUB_LIST_LENGTH = 30;
+			GITHUB_HEAD = 'div';
+			GITHUB_THEME = 'white';
+			GITHUB_TITLE = 'apigenerator.org';
+			GITHUB_SHOW_ALL = 'Show all';
+		</script>
+		<script src="http://drnic.github.com/github-badges/dist/github-badge-launcher.js" type="text/javascript"></script>
+		-->
+	</section>
+
+	<hr>
+
+	<section id="use">
+		<h2>Use</h2>
+		<p>Use apigenerator.org is really easy and done in three simple steps!</p>
+		<p><span class="label label-info">Step 1</span> create an <code>apigen.yml</code> in you project.</p>
+		<pre>~</pre>
+		<p>Yes, if you want to use default settings, just add <code>~</code> to your <code>apigen.yml</code></p>
+		<p class="alert alert-info">Have a look into
+			<a href="https://github.com/apigenerator/apigenerator.org/blob/master/config/defaults.yml.dist" target="_blank"><code>defaults.yml.dist</code></a>
+			for all possible options.</p>
+		<p>Our defaults are:</p>
+		<pre>allowed-html: b,i,a,ul,ol,li,p,br,var,samp,kbd,tt,table,thead,tbody,tr,td,pre,code
+autocomplete: classes,constants,functions,methods,properties,classconstants
+access-levels: public,protected,private
+internal: yes
+php: false
+deprecated: true
+todo: true</pre>
+
+		<p><span class="label label-info">Step 2</span> Allow user <code>apigenerator</code> to push to your repository.</p>
+		<p><span class="label label-success">for personal accounts</span> go to project Settings &rarr; Collaborators and add <code>apigenerator</code>.</p>
+		<p><span class="label label-success">for organizations without apigenerator team</span>
+			go to organizations team page, create a new team called <code>apigenerator</code>, grand <em>Push &amp; Pull</em> access,
+			add <code>apigenerator</code> as a member and the repositories you want to generate docs for.</p>
+		<p><span class="label label-success">for organizations with apigenerator team</span>
+			go to project Settings &rarr; Teams and add the team <code>apigenerator</code>.</p>
+		<p class="alert alert-danger"><strong>Security hint</strong>: We promise that we will use the access only to push the generated docs.
+			You can check our code on <a href="https://github.com/apigenerator/apigenerator.org" target="_blank">github</a>.
+			If this is not enough for you, use the code and install your own
+			<a href="https://github.com/apigenerator/apigenerator.org" target="_blank">apigenerator.org</a> instance.</p>
+
+		<p><span class="label label-info">Step 3</span> Register a service hook.</p>
+		<p>Go to project Settings &rarr; Service Hooks &rarr; WebHook URLs and add <code>http://apigenerator.org/hook.php</code></p>
+		<p class="alert alert-info">We will provide a GitHub Service Hook shortly!</p>
+	</section>
+
+	<hr>
+
+	<footer id="imprint" class="text-center">
+		<p>brought to you by <strong><a href="https://bit3.de/" target="_blank">bit3 UG</a></strong> &mdash; <a href="https://bit3.de/de/impressum.html" target="_blank">imprint</a></p>
+	</footer>
+</div>
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+</body>
+</html>

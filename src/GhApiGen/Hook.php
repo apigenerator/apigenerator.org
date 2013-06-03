@@ -20,9 +20,18 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Yaml\Yaml;
 
 class Hook
 {
+	const PARAM_SOURCE_FILE = 'source-file';
+
+	const PARAM_DOCS_FILE = 'docs-file';
+
+	const PARAM_STRING = 'string';
+
+	const PARAM_BOOL = 'bool';
+
 	/**
 	 * @var string
 	 */
@@ -111,7 +120,7 @@ class Hook
 		$this->root = dirname(dirname(__DIR__));
 
 		$this->handler = new RotatingFileHandler($this->root . '/log/hook.log', 7);
-		$this->logger = new Logger('*/*', array($this->handler));
+		$this->logger  = new Logger('*/*', array($this->handler));
 
 		$this->fs = new Filesystem();
 	}
@@ -124,16 +133,18 @@ class Hook
 	 *
 	 * @throws ErrorException
 	 */
-	public function handleError($errno, $errstr, $errfile, $errline ) {
+	public function handleError($errno, $errstr, $errfile, $errline)
+	{
 		throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 	}
 
 	/**
 	 * @param Exception $exception
 	 */
-	public function handleException($exception) {
+	public function handleException($exception)
+	{
 		$message = '';
-		$e = $exception;
+		$e       = $exception;
 		do {
 			$message .= sprintf(
 				"%s:%d: [%s] (%d) %s\n",
@@ -148,7 +159,9 @@ class Hook
 
 		$this->logger->error(rtrim($message));
 
-		while (count(ob_list_handlers())) ob_end_clean();
+		while (count(ob_list_handlers())) {
+			ob_end_clean();
+		}
 		header("HTTP/1.0 500 Internal Server Error");
 		echo '500 Internal Server Error';
 		exit(1);
@@ -168,22 +181,21 @@ class Hook
 			)
 		);
 
-		$this->ownerName = $ownerName;
+		$this->ownerName      = $ownerName;
 		$this->repositoryName = $repositoryName;
-		$this->masterBranch = $masterBranch;
-		$this->commitBranch = $commitBranch;
-		$this->commitMessage = $commitMessage;
+		$this->masterBranch   = $masterBranch;
+		$this->commitBranch   = $commitBranch;
+		$this->commitMessage  = $commitMessage;
 
 		$this->repository = $this->ownerName . '/' . $this->repositoryName;
 
 		$this->checkApiGenInstalled();
-		$this->loadRepositories();
 		$this->buildDefaultSettings();
-		$this->buildSettings();
-		$this->checkBranch();
 		$this->initSourcePath();
 		$this->initDocsPath();
 		$this->checkoutSource();
+		$this->buildSettings();
+		$this->checkBranch();
 		$this->prepareDocs();
 		$this->generateDocs();
 		$this->pushDocs();
@@ -196,24 +208,10 @@ class Hook
 		}
 	}
 
-	protected function loadRepositories()
-	{
-		if (file_exists($this->root . '/config/repositories.yml')) {
-			$this->repositories = \Symfony\Component\Yaml\Yaml::parse($this->root . '/config/repositories.yml');
-		}
-		else {
-			throw new \RuntimeException('Please configure repositories in config/repositories.yml');
-		}
-	}
-
 	protected function buildDefaultSettings()
 	{
-		// build defaults
-		if (array_key_exists('defaults', $this->repositories)) {
-			$this->defaultSettings = $this->repositories['defaults'];
-		}
-		else {
-			$this->defaultSettings = array();
+		if (file_exists($this->root . '/config/defaults.yml')) {
+			$this->defaultSettings = Yaml::parse($this->root . '/config/defaults.yml');
 		}
 
 		# build default base url
@@ -228,50 +226,6 @@ class Hook
 		# set default title
 		if (!array_key_exists('title', $this->defaultSettings)) {
 			$this->defaultSettings['title'] = $this->repository;
-		}
-	}
-
-	protected function buildSettings()
-	{
-		// get the repository documentation settings
-		if (array_key_exists($this->repository, $this->repositories)) {
-			$this->settings = $this->repositories[$this->repository];
-		}
-		else {
-			$ownerWildcard = $this->ownerName . '/*';
-
-			if (!array_key_exists($ownerWildcard, $this->repositories)) {
-				throw new \RuntimeException('Repository ' . $this->repository . ' is not allowed');
-			}
-
-			$this->settings = $this->repositories[$ownerWildcard];
-		}
-		if ($this->settings === null) {
-			$this->settings = array();
-		}
-
-		// use the github master branch
-		if (empty($this->settings['branch'])) {
-			$this->settings['branch'] = $this->masterBranch;
-		}
-
-		# merge with defaults
-		$this->settings = array_merge(
-			$this->defaultSettings,
-			$this->settings
-		);
-
-		$this->logger->debug(
-			sprintf('Build settings for %s/%s', $this->ownerName, $this->repositoryName),
-			$this->settings
-		);
-	}
-
-	protected function checkBranch()
-	{
-		if ($this->settings['branch'] != $this->commitBranch) {
-			$this->logger->debug('Skip branch ' . $this->commitBranch . ', expect branch ' . $this->settings['branch']);
-			exit;
 		}
 	}
 
@@ -326,7 +280,9 @@ class Hook
 				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
 			}
 
-			$process = new Process('git reset --hard ' . escapeshellarg('origin/' . $this->settings['branch']), $this->sourcesPath);
+			$process = new Process('git reset --hard ' . escapeshellarg(
+				'origin/' . $this->settings['branch']
+			), $this->sourcesPath);
 			$process->run();
 			if (!$process->isSuccessful()) {
 				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
@@ -335,11 +291,53 @@ class Hook
 		else {
 			$this->logger->debug(sprintf('Checkout source %s', $url));
 
-			$process = new Process('git clone -b ' . escapeshellarg($this->settings['branch']) . ' ' . $url . ' ' . escapeshellarg($this->sourcesPath));
+			$process = new Process('git clone -b ' . escapeshellarg(
+				$this->settings['branch']
+			) . ' ' . $url . ' ' . escapeshellarg($this->sourcesPath));
 			$process->run();
 			if (!$process->isSuccessful()) {
 				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
 			}
+		}
+	}
+
+	protected function buildSettings()
+	{
+		if (!file_exists($this->sourcesPath . '/apigen.yml')) {
+			$this->logger->warning('apigen.yml is missing, skip');
+			exit;
+		}
+
+		$this->settings = $this->defaultSettings = Yaml::parse($this->sourcesPath . '/apigen.yml');
+
+		if ($this->settings === null) {
+			$this->settings = array();
+		}
+
+		// use the github master branch
+		if (empty($this->settings['branch'])) {
+			$this->settings['branch'] = $this->masterBranch;
+		}
+
+		# merge with defaults
+		$this->settings = array_merge(
+			$this->defaultSettings,
+			$this->settings
+		);
+
+		$this->logger->debug(
+			sprintf('Build settings for %s/%s', $this->ownerName, $this->repositoryName),
+			$this->settings
+		);
+	}
+
+	protected function checkBranch()
+	{
+		if ($this->settings['branch'] != $this->commitBranch) {
+			$this->logger->warning(
+				'Skip branch ' . $this->commitBranch . ', expect branch ' . $this->settings['branch']
+			);
+			exit;
 		}
 	}
 
@@ -380,7 +378,12 @@ class Hook
 			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
 		}
 		$branches = explode("\n", $process->getOutput());
-		$branches = array_map(function($branch) { return ltrim($branch, '*'); }, $branches);
+		$branches = array_map(
+			function ($branch) {
+				return ltrim($branch, '*');
+			},
+			$branches
+		);
 		$branches = array_map('trim', $branches);
 
 		if (in_array('remotes/origin/gh-pages', $branches)) {
@@ -423,44 +426,66 @@ class Hook
 		$this->logger->debug('Generate docs');
 
 		$args = array($this->root . '/apigen/apigen.php');
-		foreach (array(
-			'config',
-			'extensions',
-			'exclude',
-			'skip-doc-path',
-			'skip-doc-prefix',
-			'charset',
-			'main',
-			'title',
-			'base-url',
-			'google-cse-id',
-			'google-cse-label',
-			'google-analytics',
-			'template-config',
-			'allowed-html',
-			'groups',
-			'autocomplete',
-			'access-levels',
-			'internal',
-			'php',
-			'tree',
-			'deprecated',
-			'todo',
-			'source-code',
-			'download',
-			'report',
-			'wipeout',
-		) as $parameter) {
+		foreach (
+			array(
+				'config'           => Hook::PARAM_SOURCE_FILE,
+				'extensions'       => Hook::PARAM_STRING,
+				'exclude'          => Hook::PARAM_STRING,
+				'skip-doc-path'    => Hook::PARAM_STRING,
+				'skip-doc-prefix'  => Hook::PARAM_STRING,
+				'charset'          => Hook::PARAM_STRING,
+				'main'             => Hook::PARAM_STRING,
+				'title'            => Hook::PARAM_STRING,
+				'base-url'         => Hook::PARAM_STRING,
+				'google-cse-id'    => Hook::PARAM_STRING,
+				'google-cse-label' => Hook::PARAM_STRING,
+				'google-analytics' => Hook::PARAM_STRING,
+				'template-config'  => Hook::PARAM_SOURCE_FILE,
+				'allowed-html'     => Hook::PARAM_STRING,
+				'groups'           => Hook::PARAM_STRING,
+				'autocomplete'     => Hook::PARAM_STRING,
+				'access-levels'    => Hook::PARAM_STRING,
+				'internal'         => Hook::PARAM_BOOL,
+				'php'              => Hook::PARAM_BOOL,
+				'tree'             => Hook::PARAM_BOOL,
+				'deprecated'       => Hook::PARAM_BOOL,
+				'todo'             => Hook::PARAM_BOOL,
+				'source-code'      => Hook::PARAM_BOOL,
+				'download'         => Hook::PARAM_BOOL,
+				'report'           => Hook::PARAM_DOCS_FILE,
+				'wipeout'          => Hook::PARAM_BOOL,
+			) as $parameter => $type
+		) {
 			if (array_key_exists($parameter, $this->settings)) {
+				$value = $this->settings[$parameter];
+				switch ($type) {
+					case Hook::PARAM_SOURCE_FILE:
+						$value = $this->sourcesPath . '/' . ltrim($value, '/');
+						break;
+					case Hook::PARAM_DOCS_FILE:
+						$value = $this->docsPath . '/' . ltrim($value, '/');
+						break;
+					case Hook::PARAM_STRING:
+						// do nothing
+						break;
+					case Hook::PARAM_BOOL:
+						$value = $value ? 'yes' : 'no';
+						break;
+					default:
+						$this->logger->warning(sprintf('Parameter %s has an illegal type %s', $parameter, $type));
+						// skip
+						continue;
+				}
+
 				$args[] = '--' . $parameter;
-				$args[] = is_bool($this->settings[$parameter]) ? ($this->settings[$parameter] ? 'yes' : 'no') : $this->settings[$parameter];
+				$args[] = $value;
 			}
 		}
 		$args[] = '--source';
-		$args[] = $this->sourcesPath;
+		$args[] = $this->sourcesPath . ($this->settings['src-path'] ? '/' . ltrim($this->settings['src-path'], '/') : '');
 		$args[] = '--destination';
-		$args[] = $this->docsPath;
-		$args = array_map('escapeshellarg', $args);
+		$args[] = $this->docsPath . ($this->settings['docs-path'] ? '/' . ltrim($this->settings['docs-path'], '/') : '');
+		$args   = array_map('escapeshellarg', $args);
 
 		$cmd = 'php ' . implode(' ', $args);
 
