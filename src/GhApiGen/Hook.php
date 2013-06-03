@@ -213,6 +213,9 @@ class Hook
 		if (file_exists($this->root . '/config/defaults.yml')) {
 			$this->defaultSettings = Yaml::parse($this->root . '/config/defaults.yml');
 		}
+		else {
+			$this->defaultSettings = array();
+		}
 
 		# build default base url
 		if (!array_key_exists('base-url', $this->defaultSettings)) {
@@ -281,7 +284,7 @@ class Hook
 			}
 
 			$process = new Process('git reset --hard ' . escapeshellarg(
-				'origin/' . $this->settings['branch']
+				'origin/' . $this->commitBranch
 			), $this->sourcesPath);
 			$process->run();
 			if (!$process->isSuccessful()) {
@@ -292,7 +295,7 @@ class Hook
 			$this->logger->debug(sprintf('Checkout source %s', $url));
 
 			$process = new Process('git clone -b ' . escapeshellarg(
-				$this->settings['branch']
+				$this->commitBranch
 			) . ' ' . $url . ' ' . escapeshellarg($this->sourcesPath));
 			$process->run();
 			if (!$process->isSuccessful()) {
@@ -308,7 +311,7 @@ class Hook
 			exit;
 		}
 
-		$this->settings = $this->defaultSettings = Yaml::parse($this->sourcesPath . '/apigen.yml');
+		$this->settings = Yaml::parse($this->sourcesPath . '/apigen.yml');
 
 		if ($this->settings === null) {
 			$this->settings = array();
@@ -482,9 +485,9 @@ class Hook
 			}
 		}
 		$args[] = '--source';
-		$args[] = $this->sourcesPath . ($this->settings['src-path'] ? '/' . ltrim($this->settings['src-path'], '/') : '');
+		$args[] = $this->sourcesPath . (array_key_exists('src-path', $this->settings) ? '/' . ltrim($this->settings['src-path'], '/') : '');
 		$args[] = '--destination';
-		$args[] = $this->docsPath . ($this->settings['docs-path'] ? '/' . ltrim($this->settings['docs-path'], '/') : '');
+		$args[] = $this->docsPath . (array_key_exists('docs-path', $this->settings) ? '/' . ltrim($this->settings['docs-path'], '/') : '');
 		$args   = array_map('escapeshellarg', $args);
 
 		$cmd = 'php ' . implode(' ', $args);

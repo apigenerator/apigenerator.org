@@ -1,6 +1,8 @@
 /sources/
 /docs/
 /config/repositories.yml
+/web/style.css
+/web/style.min.css
 
 # OS
 .DS_Store

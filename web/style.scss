@@ -1,5 +1,7 @@
 body {
-	padding-top: 60px;
+	@media (min-width: 641px) {
+		padding-top: 60px;
+	}
 }
 
 .fork {
@@ -32,6 +34,9 @@ header {
 		height: 60px;
 		top: 0;
 	}
+	@media (max-width: 640px) {
+		display: none;
+	}
 
 	.navbar {
 		padding-bottom: 0;
@@ -39,9 +44,18 @@ header {
 }
 
 section {
-	padding: 60px 0;
+	@media (min-width: 641px) {
+		padding: 60px 0;
+	}
 }
 
 #about {
 	text-align: center;
+
+	@media (max-width: 640px) {
+		img {
+			display: block;
+			margin: 0 auto;
+		}
+	}
 }
