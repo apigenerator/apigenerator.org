@@ -8,7 +8,7 @@
 	<link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
 	<link href="style.min.css" rel="stylesheet" media="screen">
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="0">
+<body data-spy="scroll" data-target=".navbar" data-offset="1">
 <div class="container-narrow">
 	<a href="https://github.com/apigenerator/apigenerator.org" target="_blank" class="fork">
 		<img src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub">
@@ -50,36 +50,53 @@
 	<hr>
 
 	<section id="use">
-		<h2>Use</h2>
+		<h2>How to use</h2>
 		<p>Use apigenerator.org is really easy and done in three simple steps!</p>
-		<p><span class="label label-info">Step 1</span> create an <code>apigen.yml</code> in you project.</p>
+
+		<h3>Step 1: create an apigen.yml in you project.</h3>
 		<pre>~</pre>
 		<p>Yes, if you want to use default settings, just add <code>~</code> to your <code>apigen.yml</code></p>
 		<p class="alert alert-info">Have a look into
-			<a href="https://github.com/apigenerator/apigenerator.org/blob/master/config/defaults.yml.dist" target="_blank"><code>defaults.yml.dist</code></a>
+			<code><a href="https://github.com/apigenerator/apigenerator.org/blob/master/config/defaults.yml.dist" target="_blank">defaults.yml.dist</a></code>
 			for all possible options.</p>
 		<p>Our defaults are:</p>
-		<pre>allowed-html: b,i,a,ul,ol,li,p,br,var,samp,kbd,tt,table,thead,tbody,tr,td,pre,code
+		<pre># inline code examples typically contains tables or code snippets
+allowed-html: b,i,a,ul,ol,li,p,br,var,samp,kbd,tt,table,thead,tbody,tr,td,pre,code
+# we want to search everything!
 autocomplete: classes,constants,functions,methods,properties,classconstants
+# privates are useful to know for developers
 access-levels: public,protected,private
+# even internals are useful to know for developers
 internal: yes
+# the php lib is already documented on php.net
 php: false
+# the doc should contain deprecated to not differ from source
 deprecated: true
+# useful for developers AND users to know, what is to do
 todo: true</pre>
 
-		<p><span class="label label-info">Step 2</span> Allow user <code>apigenerator</code> to push to your repository.</p>
-		<p><span class="label label-success">for personal accounts</span> go to project Settings &rarr; Collaborators and add <code>apigenerator</code>.</p>
-		<p><span class="label label-success">for organizations without apigenerator team</span>
-			go to organizations team page, create a new team called <code>apigenerator</code>, grant <em>Push &amp; Pull</em> access,
+		<hr>
+
+		<h3>Step 2: Allow user apigenerator to push to your repository.</h3>
+
+		<h4>for personal accounts</h4>
+		<p>go to project Settings &rarr; Collaborators and add <code>apigenerator</code>.</p>
+
+		<h4>for organizations without apigen team</h4>
+		<p>go to organizations team page, create a new team called <code>apigen</code>, grant <em>Push &amp; Pull</em> access,
 			add <code>apigenerator</code> as a member and the repositories you want to generate docs for.</p>
-		<p><span class="label label-success">for organizations with apigenerator team</span>
-			go to project Settings &rarr; Teams and add the team <code>apigenerator</code>.</p>
+
+		<h4>for organizations with apigen team</h4>
+		<p>go to project Settings &rarr; Teams and add the team <code>apigen</code>.</p>
+		
 		<p class="alert alert-danger"><strong>Security hint</strong>: We promise that we will use the access only to push the generated docs.
 			You can check our code on <a href="https://github.com/apigenerator/apigenerator.org" target="_blank">github</a>.
 			If this is not enough for you, use the code and install your own
 			<a href="https://github.com/apigenerator/apigenerator.org" target="_blank">apigenerator.org</a> instance.</p>
 
-		<p><span class="label label-info">Step 3</span> Register a service hook.</p>
+		<hr>
+
+		<h3>Step 3: Register a service hook.</h3>
 		<p>Go to project Settings &rarr; Service Hooks &rarr; WebHook URLs and add <code>http://apigenerator.org/hook.php</code></p>
 		<p class="alert alert-info">We will provide a GitHub Service Hook shortly!</p>
 	</section>
