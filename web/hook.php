@@ -19,6 +19,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $hook = new \GhApiGen\Hook();
 
+if (!array_key_exists('payload', $_POST)) {
+	header("HTTP/1.1 400 Bad Request");
+	echo '400 Bad Request';
+	exit(1);
+}
+
 $payload = $_POST['payload'];
 $payload = json_decode($payload);
 

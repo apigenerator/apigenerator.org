@@ -162,7 +162,7 @@ class Hook
 		while (count(ob_list_handlers())) {
 			ob_end_clean();
 		}
-		header("HTTP/1.0 500 Internal Server Error");
+		header("HTTP/1.1 500 Internal Server Error");
 		echo '500 Internal Server Error';
 		exit(1);
 	}
