@@ -131,11 +131,15 @@ parseprivate: true</pre>
 		<h4>for organizations with apigen team</h4>
 		<p>go to project Settings &rarr; Teams and add the team <code>apigen</code>.</p>
 
-		<p class="alert alert-success"><strong>Security hint</strong>: We promise that we will use the access only to push the generated docs.
-			If this is not enough for you, we have two solutions for you.<br>
-			First use a separate repository for your docs, by adding <code>docs-repository: acme/docs</code> to your <code>apigen.yml</code>.
-			Second you can check out our code on <a href="https://github.com/apigenerator/apigenerator.org" target="_blank">github</a> and install your own
-			<a href="https://github.com/apigenerator/apigenerator.org" target="_blank">apigenerator.org</a> instance.</p>
+		<p class="alert alert-danger"><strong>Security hint</strong>: We promise that we will use the access only to push the generated docs.
+			If this is not enough for you, we have two solutions for you.<br></p>
+
+		<p class="alert alert-success"><strong>Use a separate docs repository</strong>: You can use a separate repository for your docs,
+			by adding <code>docs-repository: acme/docs</code> to your <code>apigen.yml</code> or <code>phpdoc.yml</code>.</p>
+
+		<p class="alert alert-success"><strong>Install you own service</strong>: You can check out our code on
+			<a href="https://github.com/apigenerator/apigenerator.org" target="_blank">github</a> and install your own
+			apigenerator.org instance.</p>
 
 		<hr>
 
@@ -143,7 +147,7 @@ parseprivate: true</pre>
 		<p>Go to project Settings &rarr; Service Hooks &rarr; WebHook URLs and add <code>http://apigenerator.org/github.php</code></p>
 		<p class="alert alert-info">We will provide a GitHub Service Hook shortly!</p>
 
-		<h3>Step 4: Add badge to your README.md</h3>
+		<h3>Step 4: Add badge to your README.md <span class="label label-info">optional</span></h3>
 		<p><code>[![API DOCS](http://apigenerator.org/badge.png)](http://&lt;user&gt;.github.io/&lt;repo&gt;/)</code></p>
 	</section>
 
