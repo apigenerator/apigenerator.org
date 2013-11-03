@@ -352,14 +352,24 @@ abstract class AbstractGenerator
 			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 		}
 
-		if ($process->getOutput()) {
-			$process = ProcessBuilder::create(array('git', 'add', '.'))
-				->setWorkingDirectory($docsRepository->getDocsPath())
-				->getProcess();
-			$this->logger->debug('exec ' . $process->getCommandLine());
-			$process->run();
-			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+		$changes = $process->getOutput();
+
+		if ($changes) {
+			$changes = explode("\n", $changes);
+			$changes = array_map('trim', $changes);
+			$changes = array_filter($changes);
+
+			foreach ($changes as $change) {
+				list($status, $file) = explode(' ', $change, 2);
+
+				$process = ProcessBuilder::create(array('git', $status == 'D' ? 'rm' : 'add', $file))
+					->setWorkingDirectory($docsRepository->getDocsPath())
+					->getProcess();
+				$this->logger->debug('exec ' . $process->getCommandLine());
+				$process->run();
+				if (!$process->isSuccessful()) {
+					throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
+				}
 			}
 
 			$process = ProcessBuilder::create(array('git', 'commit', '-m', $repository->getCommitMessage()))
