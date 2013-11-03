@@ -30,7 +30,7 @@
 	<section id="about">
 		<h1><img src="logo.png"> free apigen your sources!</h1>
 		<p class="lead">apigenerator.org creates your api documentation, using <a href="http://apigen.org" target="_blank">apigen</a>
-			just in time and push it back into your repository as github page!</p>
+			or <a href="http://phpdoc.org" target="_blank">phpDocumentor</a> just in time and push it back into your repository as github page!</p>
 		<a href="#use" class="btn btn-large btn-success">It is free, try it out!</a>
 
 		<!--
