@@ -77,6 +77,8 @@ abstract class AbstractGenerator
 			$this->prepareDocs($repository, $docsRepository, $source);
 			$this->generateDocs($repository, $docsRepository, $source);
 			$this->pushDocs($repository, $docsRepository, $source);
+
+			$this->updateHistory($repository, $docsRepository, $source);
 		}
 		catch (\Exception $exception) {
 			$this->logger->addCritical($exception->getMessage() . "\n" . $exception->getTraceAsString());
@@ -378,5 +380,47 @@ abstract class AbstractGenerator
 		if (!$process->isSuccessful()) {
 			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
 		}
+	}
+
+	protected function updateHistory(Repository $repository, Repository $docsRepository, GitSource $source)
+	{
+		if (array_key_exists('promoted', $this->settings) && $this->settings['promoted'] === false) {
+			return;
+		}
+
+		$pathname = dirname(dirname(__DIR__)) . '/web/history.html';
+		$file = fopen($pathname, file_exists($pathname) ? 'r+' : 'w');
+		flock($file, LOCK_EX);
+
+		$history = stream_get_contents($file);
+		$lines = explode("\n", $history);
+		$lines = array_map('trim', $lines);
+		$lines = array_filter($lines);
+
+		$class = new \ReflectionClass($this);
+		$className = strtolower($class->getShortName());
+
+		array_unshift(
+			$lines,
+			sprintf(
+				'<tr><td>%s</td><td>%s</td><td><a href="%s" target="_blank">%s</a></td></tr>',
+				date('Y-m-d H:i:s'),
+				$className,
+				$source->getPagesUrl($docsRepository),
+				$repository->getRepository()
+			)
+		);
+
+		while (count($lines) > 15) {
+			array_pop($lines);
+		}
+
+		$history = implode("\n", $lines);
+		ftruncate($file, 0);
+		fwrite($file, $history);
+
+		fflush($file);
+		flock($file, LOCK_UN);
+		fclose($file);
 	}
 }

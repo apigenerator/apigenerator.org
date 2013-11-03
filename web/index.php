@@ -49,6 +49,26 @@
 
 	<hr>
 
+	<?php if (file_exists('history.html')): ?>
+	<section id="history">
+		<h2>Generation history</h2>
+		<table class="table table-bordered table-striped">
+			<thead>
+			<tr>
+				<th>date</th>
+				<th>generator</th>
+				<th>repository</th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php include('history.html'); ?>
+			</tbody>
+		</table>
+	</section>
+
+	<hr>
+	<?php endif; ?>
+
 	<section id="use">
 		<h2>How to use</h2>
 		<p>Use apigenerator.org is really easy and done in three simple steps!</p>
