@@ -92,7 +92,7 @@ class Phpdoc extends AbstractGenerator
 		$this->logger->debug('exec ' . $process->getCommandLine());
 		$process->run();
 		if (!$process->isSuccessful()) {
-			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 		}
 	}
 }

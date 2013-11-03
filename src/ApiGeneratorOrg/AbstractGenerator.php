@@ -107,7 +107,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 
 			$process = ProcessBuilder::create(array('git', 'fetch', 'origin'))
@@ -116,7 +116,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 
 			$process = ProcessBuilder::create(array('git', 'reset', '--hard', 'origin/' . $repository->getCommitBranch()))
@@ -125,7 +125,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 		}
 		else {
@@ -136,7 +136,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 		}
 	}
@@ -242,7 +242,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 		}
 		else {
@@ -251,7 +251,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 
 			$process = ProcessBuilder::create(array('git', 'remote', 'add', 'origin', $url))
@@ -260,7 +260,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 		}
 
@@ -270,7 +270,7 @@ abstract class AbstractGenerator
 		$this->logger->debug('exec ' . $process->getCommandLine());
 		$process->run();
 		if (!$process->isSuccessful()) {
-			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 		}
 
 		$process = ProcessBuilder::create(array('git', 'branch', '-a'))
@@ -279,7 +279,7 @@ abstract class AbstractGenerator
 		$this->logger->debug('exec ' . $process->getCommandLine());
 		$process->run();
 		if (!$process->isSuccessful()) {
-			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 		}
 		$branches = explode("\n", $process->getOutput());
 		$branches = array_map(
@@ -299,7 +299,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 
 			$process = ProcessBuilder::create(array('git', 'reset', '--hard', 'origin/' . $this->settings['docs-branch']))
@@ -308,7 +308,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 		}
 		else if (!in_array($this->settings['docs-branch'], $branches)) {
@@ -320,7 +320,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 		}
 		else {
@@ -332,7 +332,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 		}
 	}
@@ -349,7 +349,7 @@ abstract class AbstractGenerator
 		$this->logger->debug('exec ' . $process->getCommandLine());
 		$process->run();
 		if (!$process->isSuccessful()) {
-			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 		}
 
 		if ($process->getOutput()) {
@@ -368,7 +368,7 @@ abstract class AbstractGenerator
 			$this->logger->debug('exec ' . $process->getCommandLine());
 			$process->run();
 			if (!$process->isSuccessful()) {
-				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+				throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 			}
 		}
 
@@ -378,7 +378,7 @@ abstract class AbstractGenerator
 		$this->logger->debug('exec ' . $process->getCommandLine());
 		$process->run();
 		if (!$process->isSuccessful()) {
-			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput());
+			throw new \RuntimeException($process->getCommandLine() . ': ' . $process->getErrorOutput() ?: $process->getOutput());
 		}
 	}
 
