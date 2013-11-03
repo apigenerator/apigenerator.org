@@ -102,7 +102,7 @@ deprecated: true
 todo: true</pre>
 			</div>
 			<div class="tab-pane" id="phpdoc">
-				<h3>Step 1: create an phpdoc.yml in you project.</h3>
+				<h3>Step 1: create a phpdoc.yml in you project.</h3>
 				<pre>~</pre>
 				<p>Yes, if you want to use default settings, just add <code>~</code> to your <code>phpdoc.yml</code></p>
 				<p class="alert alert-info">Have a look into
