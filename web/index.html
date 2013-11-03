@@ -53,14 +53,20 @@
 		<h2>How to use</h2>
 		<p>Use apigenerator.org is really easy and done in three simple steps!</p>
 
-		<h3>Step 1: create an apigen.yml in you project.</h3>
-		<pre>~</pre>
-		<p>Yes, if you want to use default settings, just add <code>~</code> to your <code>apigen.yml</code></p>
-		<p class="alert alert-info">Have a look into
-			<code><a href="https://github.com/apigenerator/apigenerator.org/blob/master/config/defaults.yml.dist" target="_blank">defaults.yml.dist</a></code>
-			for all possible options.</p>
-		<p>Our defaults are:</p>
-		<pre># inline code examples typically contains tables or code snippets
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#apigen" data-toggle="tab">apigen</a></li>
+			<li><a href="#phpdoc" data-toggle="tab">phpdoc</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="apigen">
+				<h3>Step 1: create an apigen.yml in you project.</h3>
+				<pre>~</pre>
+				<p>Yes, if you want to use default settings, just add <code>~</code> to your <code>apigen.yml</code></p>
+				<p class="alert alert-info">Have a look into
+					<code><a href="https://github.com/apigenerator/apigenerator.org/blob/master/config/apigen.yml.dist" target="_blank">apigen.yml.dist</a></code>
+					for all possible options.</p>
+				<p>Our defaults are:</p>
+				<pre># inline code examples typically contains tables or code snippets
 allowed-html: b,i,a,ul,ol,li,p,br,var,samp,kbd,tt,table,thead,tbody,tr,td,pre,code
 # we want to search everything!
 autocomplete: classes,constants,functions,methods,properties,classconstants
@@ -74,6 +80,22 @@ php: false
 deprecated: true
 # useful for developers AND users to know
 todo: true</pre>
+			</div>
+			<div class="tab-pane" id="phpdoc">
+				<h3>Step 1: create an phpdoc.yml in you project.</h3>
+				<pre>~</pre>
+				<p>Yes, if you want to use default settings, just add <code>~</code> to your <code>phpdoc.yml</code></p>
+				<p class="alert alert-info">Have a look into
+					<code><a href="https://github.com/apigenerator/apigenerator.org/blob/master/config/phpdoc.yml.dist" target="_blank">phpdoc.yml.dist</a></code>
+					for all possible options.</p>
+				<p>Our defaults are:</p>
+				<pre># responsive ist the best template at the moment
+template: responsive
+# we think protected and privates are useful for developers
+visibility: public,protected,private
+parseprivate: true</pre>
+			</div>
+		</div>
 
 		<hr>
 
@@ -89,15 +111,16 @@ todo: true</pre>
 		<h4>for organizations with apigen team</h4>
 		<p>go to project Settings &rarr; Teams and add the team <code>apigen</code>.</p>
 
-		<p class="alert alert-danger"><strong>Security hint</strong>: We promise that we will use the access only to push the generated docs.
-			You can check our code on <a href="https://github.com/apigenerator/apigenerator.org" target="_blank">github</a>.
-			If this is not enough for you, use the code and install your own
+		<p class="alert alert-success"><strong>Security hint</strong>: We promise that we will use the access only to push the generated docs.
+			If this is not enough for you, we have two solutions for you.<br>
+			First use a separate repository for your docs, by adding <code>docs-repository: acme/docs</code> to your <code>apigen.yml</code>.
+			Second you can check out our code on <a href="https://github.com/apigenerator/apigenerator.org" target="_blank">github</a> and install your own
 			<a href="https://github.com/apigenerator/apigenerator.org" target="_blank">apigenerator.org</a> instance.</p>
 
 		<hr>
 
 		<h3>Step 3: Register a service hook.</h3>
-		<p>Go to project Settings &rarr; Service Hooks &rarr; WebHook URLs and add <code>http://apigenerator.org/hook.php</code></p>
+		<p>Go to project Settings &rarr; Service Hooks &rarr; WebHook URLs and add <code>http://apigenerator.org/github.php</code></p>
 		<p class="alert alert-info">We will provide a GitHub Service Hook shortly!</p>
 
 		<h3>Step 4: Add badge to your README.md</h3>

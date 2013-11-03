@@ -1,12 +1,17 @@
+# by default only changes on the github master branch trigger apigen
+# here you can specify another branch to listen on
+src-branch: stable
 # path inside of sources branch, see apigen --source <path>
 # default: /
 src-path: /src
+# repository name for gh-pages branch, useful if want the api docs in a separate project
+# default: same as source repository
+docs-repository: acme/example
+# if you don't want to use github pages, you can specify another branch for docs here
+docs-branch: gh-pages
 # path inside of gh-pages branch, useful if want the api docs in a sub directory
 # default: /
 docs-path: /docs
-# by default only changes on the github master branch trigger apigen
-# here you can specify another branch to listen on
-branch: stable
 # path to apigen config file inside your repository, see apigen --config <file>
 config: /apigen.config
 # allowed file extensions, see apigen --extensions <list>

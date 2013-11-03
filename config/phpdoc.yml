@@ -1,0 +1,3 @@
+template: responsive
+visibility: public,protected,private
+parseprivate: true

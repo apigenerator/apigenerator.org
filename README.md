@@ -1,8 +1,16 @@
-Install or update apigen
-------------------------
+Install
+-------
 
-Download a standalone archive from https://github.com/apigen/apigen/downloads and extract into the project root.
-The file `./apigen/apigen.php` must exist.
+Clone the apigenerator project on your server and install dependencies.
+
+```bash
+git clone git@github.com:apigenerator/apigenerator.org.git /path/to/apigenerator.org
+cd /path/to/apigenerator.org
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+```
+
+Setup your web server to point to `/path/to/apigenerator.org/web`.
 
 Setup ssh key
 -------------

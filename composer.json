@@ -1,7 +1,7 @@
 {
-	"name": "bit3/gh-genapidoc-hook",
+	"name": "apigenerator/apigenerator.org",
 	"description": "Generate apidoc as service hook and push back as github pages into repository.",
-	"keywords": ["github", "apidoc"],
+	"keywords": ["github", "apidoc", "apigen", "phpdoc", "phpdocumentor"],
 	"license": "LGPL-3.0+",
 	"authors": [
 		{
@@ -12,22 +12,26 @@
 		}
 	],
 	"support": {
-		"email": "info@bit3.de",
-		"issues": "https://github.com/bit3/gh-genapidoc-hook/issues",
-		"source": "https://github.com/bit3/gh-genapidoc-hook"
+		"email": "info@apigenerator.org",
+		"issues": "https://github.com/apigenerator/apigenerator.org/issues",
+		"source": "https://github.com/apigenerator/apigenerator.org"
 	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
 	"require": {
 		"php": ">=5.3",
 		"monolog/monolog": "~1",
-		"symfony/yaml": "2.2.*",
-		"symfony/process": "2.2.*",
-		"symfony/filesystem": "2.2.*",
-		"symfony/console": "2.2.*",
-		"guzzle/guzzle": "~3"
+		"symfony/yaml": "2.3.*",
+		"symfony/process": "2.3.*",
+		"symfony/filesystem": "2.3.*",
+		"symfony/console": "2.3.*",
+		"guzzle/guzzle": "~3",
+		"apigen/apigen": "~2",
+		"phpdocumentor/phpdocumentor": "~2"
 	},
 	"autoload": {
 		"psr-0": {
-			"GhApiGen": "src"
+			"ApiGeneratorOrg": "src"
 		}
 	},
 	"extra": {
