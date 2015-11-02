@@ -1,3 +1,5 @@
+# **[CLOSED] apigenerator.org has been discontinued**
+
 Install
 -------
 
